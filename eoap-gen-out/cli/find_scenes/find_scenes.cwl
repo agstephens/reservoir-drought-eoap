@@ -1,5 +1,5 @@
 id: 
-  eoap-gen-out/cli/find_scenes/find_scenes.cwl
+  file:///home/runner/work/reservoir-drought-eoap/reservoir-drought-eoap/eoap-gen-out/cli/find_scenes/find_scenes.cwl
 class: CommandLineTool
 inputs:
 - id: lat
@@ -119,7 +119,7 @@ outputs:
     type: array
 requirements:
 - class: DockerRequirement
-  dockerPull: ghcr.io/owner/reservoir-drought-eoap/find_scenes:main
+  dockerPull: ghcr.io/agstephens/reservoir-drought-eoap/find_scenes:main
 - class: InlineJavascriptRequirement
 doc: |
   None

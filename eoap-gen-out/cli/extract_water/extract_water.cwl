@@ -1,5 +1,5 @@
 id: 
-  eoap-gen-out/cli/extract_water/extract_water.cwl
+  file:///home/runner/work/reservoir-drought-eoap/reservoir-drought-eoap/eoap-gen-out/cli/extract_water/extract_water.cwl
 class: CommandLineTool
 inputs:
 - id: scenes
@@ -51,7 +51,7 @@ outputs:
   type: File
 requirements:
 - class: DockerRequirement
-  dockerPull: ghcr.io/owner/reservoir-drought-eoap/extract_water:main
+  dockerPull: ghcr.io/agstephens/reservoir-drought-eoap/extract_water:main
 - class: InlineJavascriptRequirement
 doc: |
   None

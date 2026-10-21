@@ -1,5 +1,5 @@
 id: 
-  eoap-gen-out/cli/compare/compare.cwl
+  file:///home/runner/work/reservoir-drought-eoap/reservoir-drought-eoap/eoap-gen-out/cli/compare/compare.cwl
 class: CommandLineTool
 inputs:
 - id: boundaries
@@ -51,7 +51,7 @@ outputs:
   type: Directory
 requirements:
 - class: DockerRequirement
-  dockerPull: ghcr.io/owner/reservoir-drought-eoap/compare:main
+  dockerPull: ghcr.io/agstephens/reservoir-drought-eoap/compare:main
 - class: InlineJavascriptRequirement
 doc: |
   None

@@ -48,7 +48,7 @@ $graph:
     - float
   requirements:
   - class: DockerRequirement
-    dockerPull: ghcr.io/owner/reservoir-drought-eoap/compare:main
+    dockerPull: ghcr.io/agstephens/reservoir-drought-eoap/compare:main
   - class: InlineJavascriptRequirement
   doc: "None\n"
   baseCommand:
@@ -111,7 +111,7 @@ $graph:
     type: File
   requirements:
   - class: DockerRequirement
-    dockerPull: ghcr.io/owner/reservoir-drought-eoap/extract_water:main
+    dockerPull: ghcr.io/agstephens/reservoir-drought-eoap/extract_water:main
   - class: InlineJavascriptRequirement
   doc: "None\n"
   baseCommand:
@@ -237,7 +237,7 @@ $graph:
       type: array
   requirements:
   - class: DockerRequirement
-    dockerPull: ghcr.io/owner/reservoir-drought-eoap/find_scenes:main
+    dockerPull: ghcr.io/agstephens/reservoir-drought-eoap/find_scenes:main
   - class: InlineJavascriptRequirement
   doc: "None\n"
   baseCommand:
@@ -258,7 +258,7 @@ $graph:
     type: Directory
   requirements:
   - class: DockerRequirement
-    dockerPull: ghcr.io/owner/reservoir-drought-eoap/make_stac:main
+    dockerPull: ghcr.io/agstephens/reservoir-drought-eoap/make_stac:main
   - class: InlineJavascriptRequirement
   doc: "None\n"
   baseCommand:

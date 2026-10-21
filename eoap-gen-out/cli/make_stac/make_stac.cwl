@@ -1,5 +1,5 @@
 id: 
-  eoap-gen-out/cli/make_stac/make_stac.cwl
+  file:///home/runner/work/reservoir-drought-eoap/reservoir-drought-eoap/eoap-gen-out/cli/make_stac/make_stac.cwl
 class: CommandLineTool
 inputs:
 - id: results
@@ -14,7 +14,7 @@ outputs:
   type: Directory
 requirements:
 - class: DockerRequirement
-  dockerPull: ghcr.io/owner/reservoir-drought-eoap/make_stac:main
+  dockerPull: ghcr.io/agstephens/reservoir-drought-eoap/make_stac:main
 - class: InlineJavascriptRequirement
 doc: |
   None

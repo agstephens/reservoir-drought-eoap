@@ -93,7 +93,7 @@ steps:
   - id: scenes
   - id: seasons
   run: 
-    /home/claude/reservoir-drought-eoap/eoap-gen-out/cli/find_scenes/find_scenes.cwl
+    /home/runner/work/reservoir-drought-eoap/reservoir-drought-eoap/eoap-gen-out/cli/find_scenes/find_scenes.cwl
 - id: extract_water
   in:
   - id: scenes
@@ -109,7 +109,7 @@ steps:
   out:
   - id: boundary
   run: 
-    /home/claude/reservoir-drought-eoap/eoap-gen-out/cli/extract_water/extract_water.cwl
+    /home/runner/work/reservoir-drought-eoap/reservoir-drought-eoap/eoap-gen-out/cli/extract_water/extract_water.cwl
   scatter:
   - season
   scatterMethod: dotproduct
@@ -129,7 +129,8 @@ steps:
     source: reservoir-drought/capacity_ml
   out:
   - id: results
-  run: /home/claude/reservoir-drought-eoap/eoap-gen-out/cli/compare/compare.cwl
+  run: 
+    /home/runner/work/reservoir-drought-eoap/reservoir-drought-eoap/eoap-gen-out/cli/compare/compare.cwl
 - id: make_stac
   in:
   - id: results
@@ -137,4 +138,4 @@ steps:
   out:
   - id: stac_catalog
   run: 
-    /home/claude/reservoir-drought-eoap/eoap-gen-out/cli/make_stac/make_stac.cwl
+    /home/runner/work/reservoir-drought-eoap/reservoir-drought-eoap/eoap-gen-out/cli/make_stac/make_stac.cwl
