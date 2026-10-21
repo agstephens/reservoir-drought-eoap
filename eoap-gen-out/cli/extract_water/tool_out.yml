@@ -1,0 +1,6 @@
+outputs:
+  boundary:
+    type: File
+    outputBinding:
+      glob: water_*.geojson
+

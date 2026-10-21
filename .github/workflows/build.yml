@@ -1,0 +1,54 @@
+name: Build EO application package
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  # Runs eoap-gen on config.yml, commits the generated CWL + Dockerfiles back to
+  # the repo, then builds and pushes one image per step to ghcr.io/<owner>/<repo>/<step>
+  build:
+    uses: EO-DataHub/eoap-gen/.github/workflows/generate-reusable.yml@main
+    with:
+      config: config.yml
+    permissions:
+      contents: write
+      packages: write
+      attestations: write
+      id-token: write
+
+  # Optional: (re)deploy the packed workflow to your EODH workspace ADES.
+  # Needs repository secrets ADES_USER (EODH username) and ADES_TOKEN (API token).
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: ${{ vars.DEPLOY_TO_ADES == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - run: git pull
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyeodh
+      - shell: python
+        env:
+          WF_ID: reservoir-drought
+          ADES_USER: ${{ secrets.ADES_USER }}
+          ADES_TOKEN: ${{ secrets.ADES_TOKEN }}
+        run: |
+          import glob, os
+          import pyeodh
+          from requests import HTTPError
+          wf_id = os.environ["WF_ID"]
+          ades = pyeodh.Client(username=os.environ["ADES_USER"], token=os.environ["ADES_TOKEN"]).get_ades()
+          packed = glob.glob("**/workflow-packed.cwl", recursive=True)[0]
+          with open(packed) as f:
+              cwl_yaml = f.read()
+          try:
+              ades.get_process(wf_id).delete()
+          except HTTPError:
+              print("Process not deployed yet.")
+          proc = ades.deploy_process(cwl_yaml=cwl_yaml)
+          print(f"{proc.id} deployed")

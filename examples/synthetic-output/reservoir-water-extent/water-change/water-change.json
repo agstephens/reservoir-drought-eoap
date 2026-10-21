@@ -1,0 +1,103 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/file/v2.1.0/schema.json"
+  ],
+  "id": "water-change",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -3.4449008,
+          51.0535649
+        ],
+        [
+          -3.4449008,
+          51.0868869
+        ],
+        [
+          -3.4872455,
+          51.0868869
+        ],
+        [
+          -3.4872455,
+          51.0535649
+        ],
+        [
+          -3.4449008,
+          51.0535649
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -3.4872455,
+    51.0535649,
+    -3.4449008,
+    51.0868869
+  ],
+  "properties": {
+    "title": "Synthetic test lake: winter vs summer change",
+    "created": "2026-10-21T14:26:01.609528Z",
+    "updated": "2026-10-21T14:26:01.609528Z",
+    "water:area_change_m2": -830500.0,
+    "water:area_change_percent": -30.91,
+    "water:level_drop_estimate_m": 8.4,
+    "water:volume_change_estimate_m3": -19079650,
+    "start_datetime": "2026-01-03T11:23:59Z",
+    "end_datetime": "2026-07-09T11:21:31Z",
+    "datetime": null
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "Reservoir water extent (winter vs summer)"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "Reservoir water extent (winter vs summer)"
+    }
+  ],
+  "assets": {
+    "plot": {
+      "href": "./comparison.png",
+      "type": "image/png",
+      "title": "Annotated comparison of winter and summer shorelines",
+      "file:size": 283017,
+      "roles": [
+        "overview",
+        "visual"
+      ]
+    },
+    "exposed_area": {
+      "href": "./exposed_area.geojson",
+      "type": "application/geo+json",
+      "title": "Area that was water in winter and dry in summer",
+      "file:size": 71944,
+      "roles": [
+        "data"
+      ]
+    },
+    "summary": {
+      "href": "./summary.json",
+      "type": "application/json",
+      "title": "Areas, change statistics and simple volume estimate",
+      "file:size": 1026,
+      "roles": [
+        "metadata"
+      ]
+    }
+  },
+  "collection": "reservoir-water-extent"
+}

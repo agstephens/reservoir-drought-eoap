@@ -1,0 +1,6 @@
+click==8.1.8
+numpy
+pyproj
+rasterio
+scipy
+shapely

@@ -1,0 +1,6 @@
+outputs:
+  results:
+    type: Directory
+    outputBinding:
+      glob: results
+

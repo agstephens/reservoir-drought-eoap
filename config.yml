@@ -1,0 +1,166 @@
+# eoap-gen configuration: reservoir drought (winter vs summer water extent)
+#
+#   find_scenes ──► extract_water (scattered: winter, summer) ──► compare ──► make_stac
+#
+# Generate the application package with:
+#   eoap-gen generate --config=config.yml --output=eoap-gen-out \
+#     --docker-url-base=ghcr.io/<owner>/<repo> --docker-tag=main
+id: reservoir-drought
+label: Reservoir drought - winter vs summer water extent
+doc: >
+  Given a point inside an inland water body and a year, selects clear Sentinel-2 ARD
+  scenes (EO DataHub / CEDA) for a winter and a summer month, delineates the water
+  body in each with MNDWI + Otsu thresholding, and outputs both boundaries as
+  GeoJSON, the exposed area, an annotated lat/lon comparison plot and a simple
+  volume-change estimate, packaged as a STAC catalogue.
+
+resources:
+  cores_min: 1
+  ram_min: 2048
+
+inputs:
+  # Defaults are Wimbleball Lake, Exmoor - "exceptionally low" in July 2026
+  - id: lat
+    label: Latitude
+    doc: Latitude (WGS84) of a point roughly in the middle of the water body
+    type: float
+    default: 51.067
+  - id: lon
+    label: Longitude
+    doc: Longitude (WGS84) of a point roughly in the middle of the water body
+    type: float
+    default: -3.467
+  - id: year
+    label: Year
+    doc: Year to analyse
+    type: int
+    default: 2026
+  - id: winter_month
+    label: Winter month
+    doc: Month (1-12) used for the high-water scene
+    type: int
+    default: 1
+  - id: summer_month
+    label: Summer month
+    doc: Month (1-12) used for the low-water scene
+    type: int
+    default: 7
+  - id: buffer_km
+    label: Search half-width (km)
+    doc: Initial half-width of the analysis window; it grows automatically for large lakes
+    type: float
+    default: 3.0
+  - id: name
+    label: Water body name
+    doc: Name used in the plot title (optional)
+    type: string
+    default: Wimbleball Lake
+  - id: bank_slope_deg
+    label: Bank slope (degrees)
+    doc: Typical bank slope used for the simple volume-change estimate
+    type: float
+    default: 10.0
+  - id: capacity_ml
+    label: Capacity (ML)
+    doc: Optional full capacity in megalitres, to express the change as a percentage (0 = unknown)
+    type: float
+    default: 21000.0
+  - id: stac_url
+    label: STAC API
+    doc: STAC API holding the sentinel2_ard collection
+    type: string
+    default: https://eodatahub.org.uk/api/catalogue/stac/catalogs/public/catalogs/ceda-stac-catalogue
+
+outputs:
+  - id: stac_output
+    type: Directory
+    source: make_stac/stac_catalog
+
+steps:
+  - id: find_scenes
+    script: steps/find_scenes/find_scenes.py
+    requirements: steps/find_scenes/requirements.txt
+    inputs:
+      - id: lat
+        source: reservoir-drought/lat
+      - id: lon
+        source: reservoir-drought/lon
+      - id: year
+        source: reservoir-drought/year
+      - id: winter_month
+        source: reservoir-drought/winter_month
+      - id: summer_month
+        source: reservoir-drought/summer_month
+      - id: buffer_km
+        source: reservoir-drought/buffer_km
+      - id: stac_url
+        source: reservoir-drought/stac_url
+    outputs:
+      - id: scenes
+        type: File
+        outputBinding:
+          glob: scenes.json
+      - id: seasons
+        type: string[]
+        outputBinding:
+          loadContents: true
+          glob: seasons.txt
+          outputEval: $(self[0].contents.split('\n'))
+
+  - id: extract_water
+    script: steps/extract_water/extract_water.py
+    requirements: steps/extract_water/requirements.txt
+    inputs:
+      - id: scenes
+        source: find_scenes/scenes
+        type: File
+      - id: season
+        source: find_scenes/seasons
+        scatter: true
+      - id: lat
+        source: reservoir-drought/lat
+      - id: lon
+        source: reservoir-drought/lon
+      - id: buffer_km
+        source: reservoir-drought/buffer_km
+    outputs:
+      - id: boundary
+        type: File
+        outputBinding:
+          glob: water_*.geojson
+
+  - id: compare
+    script: steps/compare/compare.py
+    requirements: steps/compare/requirements.txt
+    inputs:
+      - id: boundaries
+        source: extract_water/boundary
+        type: File[]
+      - id: lat
+        source: reservoir-drought/lat
+      - id: lon
+        source: reservoir-drought/lon
+      - id: name
+        source: reservoir-drought/name
+      - id: bank_slope_deg
+        source: reservoir-drought/bank_slope_deg
+      - id: capacity_ml
+        source: reservoir-drought/capacity_ml
+    outputs:
+      - id: results
+        type: Directory
+        outputBinding:
+          glob: results
+
+  - id: make_stac
+    script: steps/make_stac/make_stac.py
+    requirements: steps/make_stac/requirements.txt
+    inputs:
+      - id: results
+        source: compare/results
+        type: Directory
+    outputs:
+      - id: stac_catalog
+        type: Directory
+        outputBinding:
+          glob: .

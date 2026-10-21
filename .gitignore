@@ -1,0 +1,4 @@
+eoap-gen-out/cli/*/*-venv/
+tests/synthetic/
+run/
+__pycache__/

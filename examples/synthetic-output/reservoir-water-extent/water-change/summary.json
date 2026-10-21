@@ -1,0 +1,41 @@
+{
+  "name": "Synthetic test lake",
+  "point": {
+    "lat": 51.067,
+    "lon": -3.467
+  },
+  "winter": {
+    "datetime": "2026-01-03T11:23:59Z",
+    "source_item_id": "synthetic-winter",
+    "area_m2": 2686900.0,
+    "perimeter_m": 17612.4,
+    "sun_elevation_deg": 16.6
+  },
+  "summer": {
+    "datetime": "2026-07-09T11:21:31Z",
+    "source_item_id": "synthetic-summer",
+    "area_m2": 1856400.0,
+    "perimeter_m": 17258.2,
+    "sun_elevation_deg": 60.8
+  },
+  "area_change_m2": -830500.0,
+  "area_change_percent": -30.91,
+  "exposed_area_m2": 830501.4,
+  "volume_estimate": {
+    "method": "uniform bank slope: dh = (dA / mean perimeter) * tan(slope); dV = dh * mean area",
+    "bank_slope_deg": 10.0,
+    "mean_shoreline_retreat_m": 47.6,
+    "level_drop_m": 8.4,
+    "level_drop_range_m": [
+      4.17,
+      12.76
+    ],
+    "volume_change_m3": -19079650,
+    "volume_change_range_m3": [
+      -28993730,
+      -9466805
+    ],
+    "volume_change_megalitres": -19080.0,
+    "volume_change_percent_of_capacity": -90.9
+  }
+}

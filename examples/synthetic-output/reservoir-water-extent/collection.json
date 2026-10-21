@@ -1,0 +1,55 @@
+{
+  "type": "Collection",
+  "id": "reservoir-water-extent",
+  "stac_version": "1.1.0",
+  "description": "Water boundaries delineated from Sentinel-2 ARD and their seasonal change.",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./water-winter/water-winter.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./water-summer/water-summer.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./water-change/water-change.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    }
+  ],
+  "title": "Reservoir water extent (winter vs summer)",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -3.4872455,
+          51.0535649,
+          -3.4449008,
+          51.0868869
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2026-01-03T11:23:59Z",
+          "2026-07-09T11:21:31Z"
+        ]
+      ]
+    }
+  },
+  "license": "other"
+}

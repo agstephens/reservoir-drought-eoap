@@ -1,0 +1,12 @@
+outputs:
+  scenes:
+    type: File
+    outputBinding:
+      glob: scenes.json
+  seasons:
+    type: string[]
+    outputBinding:
+      loadContents: true
+      glob: seasons.txt
+      outputEval: $(self[0].contents.split('\n'))
+
