@@ -98,12 +98,13 @@ jobs:
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
 
-  # Optional: (re)deploy the packed workflow to your EODH workspace ADES.
-  # Needs secrets ADES_USER and ADES_TOKEN, and repository variable DEPLOY_TO_ADES=true.
+  # (Re)deploy the packed workflow to your EODH workspace ADES.
+  # Reads secrets ADES_USER and ADES_TOKEN from the "deploy-app" environment
+  # (Settings -> Environments). If they are not set, the job skips deployment.
   deploy:
     runs-on: ubuntu-latest
     needs: [build-push]
-    if: ${{ vars.DEPLOY_TO_ADES == 'true' }}
+    environment: deploy-app
     steps:
       - uses: actions/checkout@v4
         with:
@@ -122,6 +123,9 @@ jobs:
           import pyeodh
           from requests import HTTPError
           wf_id = os.environ["WF_ID"]
+          if not (os.environ.get("ADES_USER") and os.environ.get("ADES_TOKEN")):
+              print("ADES_USER / ADES_TOKEN not set in the deploy-app environment; skipping deploy.")
+              raise SystemExit(0)
           ades = pyeodh.Client(username=os.environ["ADES_USER"], token=os.environ["ADES_TOKEN"]).get_ades()
           with open(f"{os.environ.get('OUTPUT', 'eoap-gen-out')}/cli/workflow-packed.cwl") as f:
               cwl_yaml = f.read()
